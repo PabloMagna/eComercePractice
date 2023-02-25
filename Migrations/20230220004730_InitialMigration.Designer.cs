@@ -12,8 +12,8 @@ using eComerce.Data;
 namespace eComerce.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230219030654_InicialMigration")]
-    partial class InicialMigration
+    [Migration("20230220004730_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
