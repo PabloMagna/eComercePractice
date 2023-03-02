@@ -23,13 +23,20 @@
                 <div class="col-md-6">
                     <div class="card-body">
                         <p class="card-text">@item.Description</p>
-                        <p class="card-text">@item.Cinema</p>
+                        <p class="card-text">@item.Cinema.Name</p>
                         <p class="card-text">@item.MovieCategory</p>
-                        <p class="card-text">@item.StarDate</p>
-                        <p class="card-text">@item.EndDate</p>
+                        <p class="card-text">@item.StarDate.ToString("dd MMM yyyy")</p>
+                        <p class="card-text">@item.EndDate.ToString("dd MMM yyyy")</p>
                         <p class="card-text">
                             <b>Status: </b>
-                            texto
+                            @if(DateTime.Now >= item.StarDate && item.EndDate <= DateTime.Now){
+                                <span class="badge bg-success text-white">Avaible</span>
+                            }else if(DateTime.Now>item.EndDate){
+                                <span class="badge bg-danger">Expired</span>
+                            }
+                            else{
+                                <span class="badge bg-primary">Upcoming</span>
+                            }
                         </p>
                     </div>
                 </div>
