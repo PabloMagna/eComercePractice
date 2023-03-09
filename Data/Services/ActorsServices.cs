@@ -1,14 +1,16 @@
 ﻿using eComerce.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace eComerce.Data.Services
 {
     public class ActorsServices : IActorsServices
     {
         private readonly AppDbContext _context;
-        public void Add(Actor actor)
+        public async Task AddAsync(Actor actor)
         {
-            throw new NotImplementedException();
+            _context.Actors.Add(actor);
+            await _context.SaveChangesAsync();
         }
         public ActorsServices(AppDbContext context)
         {
@@ -35,14 +37,16 @@ namespace eComerce.Data.Services
             return await _context.Actors.ToListAsync();
         }
 
-        public Actor getById()
+        public async Task<Actor> getByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Actors.FirstOrDefaultAsync(n => n.Id == id);
         }
+
 
         public Actor Update(int id, Actor newActor)
         {
             throw new NotImplementedException();
         }
+
     }
 }

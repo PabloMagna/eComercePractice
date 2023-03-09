@@ -1,10 +1,14 @@
-﻿namespace eComerce.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace eComerce.Models
 {
     public class Actor_Movie
     {
+        [ForeignKey("Actor")]
         public int ActorId { get; set; }
         public Actor Actor { get; set; }
         public int MovieId { get; set; }
         public Movie Movie { get; set; }
     }
 }
+
