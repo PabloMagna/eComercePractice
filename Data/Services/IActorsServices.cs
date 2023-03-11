@@ -6,8 +6,8 @@ namespace eComerce.Data.Services
     {
         Task<IEnumerable<Actor>> getAll();
         Task AddAsync(Actor actor);
-        Actor Update(int id, Actor newActor);
-        void Delete(int id);
+        Task<Actor> UpdateAsync(int id, Actor newActor);
+        Task DeleteAsync(int id);
         Task<Actor> getByIdAsync(int id);
     }
 }

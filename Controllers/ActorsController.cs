@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Transactions;
 
 namespace eComerce.Controllers
 {
@@ -29,17 +30,6 @@ namespace eComerce.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("FullName,ProfilePicture,Bio")] Actor actor)
         {
-            Console.WriteLine(actor.FullName);
-            Console.WriteLine(actor.ProfilePicture);
-            Console.WriteLine(actor.Bio);
-             
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-            foreach (var error in errors)
-            {
-                var errorMessage = error.ErrorMessage;
-                // Hacer algo con el mensaje de error...
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(actor);
@@ -50,8 +40,44 @@ namespace eComerce.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _services.getByIdAsync(id);
-            if (actorDetails == null) return View(nameof(Index));
+            if (actorDetails == null) return View("NotFound");
             return View(actorDetails);
         }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var actor = await _services.getByIdAsync(id);
+            if (actor == null) return View("NotFound");
+            return View(actor);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,ProfilePicture,Bio")] Actor actor)
+        {
+            if (id != actor.Id) return View("NotFound");
+            if (!ModelState.IsValid)
+            {
+                return View(actor);
+            }
+            var updatedActor = await _services.UpdateAsync(id, actor);
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task <IActionResult> Delete(int id)
+        {
+            var actor = await _services.getByIdAsync(id);
+            if (actor == null) return View("NotFound");
+            return View(actor);
+        }
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var actor = await _services.getByIdAsync(id);
+            if (actor == null) return View("NotFound");
+            if (!ModelState.IsValid)
+            {
+                return View("NotFound");
+            }
+            await _services.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

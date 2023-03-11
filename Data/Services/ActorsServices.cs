@@ -17,13 +17,13 @@ namespace eComerce.Data.Services
             _context = context;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var actor = _context.Actors.Find(id);
+            var actor = await _context.Actors.FirstOrDefaultAsync(n => n.Id == id);
             if (actor != null)
             {
                 _context.Remove(actor);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -43,9 +43,11 @@ namespace eComerce.Data.Services
         }
 
 
-        public Actor Update(int id, Actor newActor)
+        public async Task<Actor> UpdateAsync(int id, Actor newActor)
         {
-            throw new NotImplementedException();
+            _context.Actors.Update(newActor);
+            await _context.SaveChangesAsync();
+            return newActor;
         }
 
     }
